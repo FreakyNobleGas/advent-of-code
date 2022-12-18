@@ -9,6 +9,11 @@ def walk_directory(file_system, position)
   current_directory
 end
 
+def insert_into_directory(file_system, position, key, value)
+  current_directory = walk_directory(file_system, position)
+  current_directory[key] = value
+end
+
 file_system = { "/": {} }
 position = Array.new
 last_command = nil
@@ -39,13 +44,16 @@ File.foreach("day-7-input.txt") do |line|
   elsif last_command == "ls"
     if line.first == "dir"
       # Save directory to filesystem. Ex: { "/": {"d": {}}}
-      file_system[position.last][line[1]] = {}
+      # file_system[position.last][line[1]] = {}
+      insert_into_directory(file_system, position, line[1], {})
     else
       # Save file to filesystem. Ex: { "d": [100, "f"] }
       if position.last == nil
-        file_system["/"][line.last] = line[1]
+        # file_system["/"][line.last] = line[1]
+        insert_into_directory(file_system, position, line[1], {})
       else
-        file_system[position.last][line.last] = line[1]
+        # file_system[position.last][line.last] = line[1]
+        insert_into_directory(file_system, position, line.last, {})
       end
     end
   end
