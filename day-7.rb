@@ -27,28 +27,42 @@ def create_new_directory(key)
 end
 
 # Get value from directory
-def get_directory_value(directory)
+def calculate_directory_value(directory)
   tmp = $file_system[directory]
   total = 0
   tmp.each { |k,v| total += v unless k == :_total }
-  insert_into_file_system(directory, :_total, total)
   total
 end
 
-def calculate_directory_totals(position)
-  total = 0
-  pp position
-  if position.count > 0
-    ((position.count)..0).each do |p|
-      parent_directory = generate_directory_key(position[0..p])
-      # puts parent_directory
-      total += get_directory_value(parent_directory)
-      insert_into_file_system(parent_directory, :_total, total)
-    end
-  end
+def get_directory_value(directory)
+  $file_system[directory][:_total]
+end
 
-  total += get_directory_value(:/)
-  insert_into_file_system(:/, :_total, total)
+def calculate_directory_totals
+  all_paths = Array.new
+  $file_system.each do |k,_|
+    insert_into_file_system(k, :_total, calculate_directory_value(k))
+    all_paths.append(k.to_s)
+  end
+  all_paths.reverse!
+
+  last_directory = ""
+  last_total = 0
+  all_paths.each do |d|
+    if last_directory.include?(d) and d != "/"
+    last_total += get_directory_value(last_directory.to_sym) + get_directory_value(d.to_sym)
+    insert_into_file_system(d.to_sym, :_total, last_total)
+
+    else
+      last_total = 0
+    end
+
+    if d.length == 2
+      tmp = get_directory_value(d.to_sym) + get_directory_value(:/)
+      insert_into_file_system(:/, :_total, tmp)
+    end
+    last_directory = d
+  end
 end
 
 def reset_position
@@ -84,52 +98,22 @@ File.foreach("day-7-input.txt") do |line|
   elsif last_command == "ls"
     if line.first != "dir"
       insert_into_file_system(generate_directory_key(position), line.last, line.first)
-      calculate_directory_totals(position)
     end
-    # if line.first == "dir"
-    #   # Save directory to filesystem. Ex: { "/": {"d": {}}}
-    #   # file_system[position.last][line[1]] = {}
-    #   insert_into_directory(position, line[1], {})
-    # else
-    #   # Save file to filesystem. Ex: { "d": [100, "f"] }
-    #   insert_into_directory(position, line.last, line.first)
-    # end
   else
     puts "ERROR: Last command was not ls"
   end
 
-  #puts "Line #{index}: #{position}"
   index += 1
 end
+calculate_directory_totals
 
 puts "File System:"
 pp $file_system
 
-# puts "Calculating Directory Totals"
-# calculate_directory_totals($file_system)
-# puts "Done!"
-
-# tmp = Array.new
-# all_combinations = Array.new
-# $total_bytes.each { |k,v| tmp.append(v) unless v > 100000}
-# (1..tmp.count).each { |i|
-#   all_combinations.append(tmp.combination(i).to_a)
-# }
-
-# puts "Calculating Combinations"
-# $test.each {|val| val.each { |k,v| tmp.append(v) unless v > 100000}}
-# (1..tmp.count).each { |i|
-#   puts "Iteration #{i}/#{tmp.count}"
-#   all_combinations.append(tmp.combination(i).to_a)
-# }
-# puts "Done!"
-
-# answer = 0
-# all_combinations.flatten!(1).each do |a|
-#   sum = a.sum
-#   if sum > answer and sum <= 100000
-#     answer = sum
-#   end
-# end
-
-# puts "Part 1: #{answer}"
+answer = 0
+$file_system.each do |k,v|
+  if v[:_total] <= 100000
+    answer += v[:_total]
+  end
+end
+puts "Part 1: #{answer}"
