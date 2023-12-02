@@ -94,7 +94,7 @@ def combine_digits(first, last):
     return (first * 10) + last
 
 
-def calculate_calibration_vals(data, part_one = False):
+def calculate_calibration_vals(data, part_one=False):
     lines = data.split("\n")
     vals = []
 
