@@ -3,7 +3,8 @@
 # Problem Link: https://adventofcode.com/2023/day/6
 # Interpreter: Python 3.12
 
-import math
+
+from _helper_methods import extract_numbers
 
 
 def main():
@@ -43,23 +44,6 @@ def find_optimal_hold_time(data):
         result *= possible_winning_times
 
     return result
-
-
-def extract_numbers(s):
-    nums = []
-    num = ""
-    for c in s:
-        if c.isnumeric():
-            num += c
-        elif num != "":
-            nums.append(int(num))
-            num = ""
-
-    # If number the last character in string
-    if num.isnumeric():
-        nums.append(int(num))
-
-    return nums
 
 
 test_data = """\

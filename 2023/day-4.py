@@ -3,6 +3,8 @@
 # Problem Link: https://adventofcode.com/2023/day/4
 # Interpreter: Python 3.12
 
+from _helper_methods import extract_numbers
+
 
 def main():
     data = test_data.splitlines()
@@ -14,23 +16,6 @@ def main():
     total_points, total_scratchcards = calculate_lottery_ticket_total(data)
     print(f"PART 1: {total_points}")
     print(f"PART 2: {total_scratchcards}")
-
-
-def extract_numbers(s):
-    nums = []
-    num = ""
-    for c in s:
-        if c.isnumeric():
-            num += c
-        elif num != "":
-            nums.append(int(num))
-            num = ""
-
-    # If number the last character in string
-    if num.isnumeric():
-        nums.append(int(num))
-
-    return nums
 
 
 def calculate_lottery_ticket_total(data):

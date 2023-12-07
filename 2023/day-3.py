@@ -3,6 +3,8 @@
 # Problem Link: https://adventofcode.com/2023/day/3
 # Interpreter: Python 3.12
 
+from _helper_methods import is_symbol
+
 global GEARS
 GEARS = {}
 
@@ -35,13 +37,6 @@ def main():
             result += value["num"]
 
     print(f"PART 2: {result}")
-
-
-def is_symbol(c):
-    if not c.isnumeric() and c != ".":
-        return True
-
-    return False
 
 
 def check_if_gear(lines, i, j, num):

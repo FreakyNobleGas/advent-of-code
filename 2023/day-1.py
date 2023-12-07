@@ -3,6 +3,8 @@
 # Problem Link: https://adventofcode.com/2023/day/1
 # Interpreter: Python 3.12
 
+from _helper_methods import find_first_num, find_last_num
+
 DIGITS = {
     "one": 1,
     "two": 2,
@@ -35,27 +37,6 @@ def all_digits():
         all.extend([key, value])
 
     return all
-
-
-def find_first_num(line):
-    for char in line:
-        if char.isnumeric():
-            return int(char)
-
-    raise ValueError(f"ERROR: No number in line {line}")
-
-
-def find_last_num(line):
-    index = -1
-    end = len(line) * -1
-
-    while index >= end:
-        if line[index].isnumeric():
-            return int(line[index])
-
-        index = index - 1
-
-    raise ValueError(f"ERROR: No number in line {line}")
 
 
 def find_all_numbers(line):
@@ -94,7 +75,7 @@ def combine_digits(first, last):
     return (first * 10) + last
 
 
-def calculate_calibration_vals(data, part_one=False):
+def calculate_calibration_vals(data, part_one = False):
     lines = data.split("\n")
     vals = []
 
