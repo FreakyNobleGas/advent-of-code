@@ -3,7 +3,7 @@
 # Problem Link: https://adventofcode.com/2023/day/1
 # Interpreter: Python 3.12
 
-from _helper_methods import find_first_num, find_last_num
+from _helper_methods import find_first_num, find_last_num, test_assertion
 
 DIGITS = {
     "one": 1,
@@ -100,10 +100,6 @@ pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet\
 """
-
-
-def test_assertion(name, result, expect):
-    assert result == expect, f"{name} should be {expect}, but is {result}"
 
 
 def test():

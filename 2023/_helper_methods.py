@@ -47,3 +47,6 @@ def find_last_num(line):
         index = index - 1
 
     raise ValueError(f"ERROR: No number in line {line}")
+
+def test_assertion(name, result, expect):
+    assert result == expect, f"{name} should be {expect}, but is {result}"
