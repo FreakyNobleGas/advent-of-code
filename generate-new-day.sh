@@ -25,10 +25,12 @@ fi
 
 problem_file_name="day-$next_problem.py"
 solution_file_name="day-$next_problem-input.txt"
+test_solution_file_name="day-$next_problem-test-input.txt"
 
 # Create the files
 touch $problem_file_name
 touch $solution_file_name
+touch $test_solution_file_name
 
 # Insert header
 cat << EOF >> $problem_file_name
@@ -40,4 +42,4 @@ EOF
 
 # Add files to Git
 cd ..
-git add "$curr_year/$problem_file_name" "$curr_year/$solution_file_name"
+git add "$curr_year/$problem_file_name" "$curr_year/$solution_file_name" "$curr_year/$test_solution_file_name"
