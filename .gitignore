@@ -58,3 +58,5 @@ build-iPhoneSimulator/
 # Jetbrains
 .idea
 *.iml
+
+*/*input*
