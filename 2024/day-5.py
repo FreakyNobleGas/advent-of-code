@@ -60,7 +60,51 @@ def validate_page(rules_dict: dict, page: list) -> int:
 
     return page[len(page) // 2]
 
-def calculate(filename: str) -> int:
+def fix_page(rules: dict, page: list) -> int:
+
+    for rule_num in rules.keys():
+        # Keep a copy of the current page so we can reinsert a number if it's
+        # already in the correct position
+        page_copy = page.copy()
+
+        if rule_num not in page:
+            continue
+
+        # Find the number of occurrences
+        count = page.count(rule_num)
+
+        # Break if the page is all the same number
+        if count == len(page):
+            break
+
+        # Remove all occurrences of the number so we can accurately track the index
+        for n in range(0, count):
+            page.remove(rule_num)
+
+        # Find optimal location for number which is the index before the first occurrence of a number in
+        # its rule list
+        optimal_index = -1
+        for index, n in enumerate(page):
+            if n in rules[rule_num]:
+                optimal_index = index
+                break
+
+        # Continue if we haven't found any violations
+        if optimal_index == -1:
+            # NOTE: This does not account for adding more than 1 rule num.
+            page.insert(page_copy.index(rule_num) + 1, rule_num)
+            continue
+
+        # Insert rule num at optimal index
+        for n in range(0, count):
+            page.insert(optimal_index, rule_num)
+
+    # assert that validate method returns non-zero
+    assert(validate_page(rules, page) != 0)
+
+    return page[len(page) // 2]
+
+def calculate_part_1(filename: str) -> int:
     rules, pages = parse_file(filename)
     rules = generate_rule_dict(rules)
 
@@ -70,11 +114,36 @@ def calculate(filename: str) -> int:
 
     return result
 
+def calculate_part_2(filename: str) -> int:
+    rules, pages = parse_file(filename)
+    rules = generate_rule_dict(rules)
 
-result = calculate("day-5-test-input.txt")
+    incorrect_pages = []
+    for page in pages.values():
+        if validate_page(rules, page) == 0:
+            incorrect_pages.append(page)
+
+    if filename == "day-5-test-input.txt":
+        assert len(incorrect_pages) == 3
+
+    result = 0
+    for page in incorrect_pages:
+        result += fix_page(rules, page)
+
+    return result
+
+result = calculate_part_1("day-5-test-input.txt")
 print(f"TEST 1: {result}")
 assert(result == 143)
 
-result = calculate("day-5-input.txt")
+result = calculate_part_1("day-5-input.txt")
 print(f"PART 1: {result}")
 assert(result == 5452)
+
+result = calculate_part_2("day-5-test-input.txt")
+print(f"TEST 2: {result}")
+assert(result == 123)
+
+result = calculate_part_2("day-5-input.txt")
+print(f"PART 2: {result}")
+assert(result == 4598)
