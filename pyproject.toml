@@ -1,0 +1,10 @@
+[project]
+name = "advent-of-code"
+description = "This project holds my solutions to the Advent of Code."
+version = "1.0.0"
+dependencies = [
+  "icecream"
+]
+authors = [
+  { name = "Nick Quinn", email = "nickquinn3131@gmail.com" }
+]

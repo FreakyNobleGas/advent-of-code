@@ -60,3 +60,4 @@ build-iPhoneSimulator/
 *.iml
 
 */*input*
+advent_of_code.egg-info
