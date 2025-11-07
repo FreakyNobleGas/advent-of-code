@@ -5,7 +5,7 @@
 # Link: https://adventofcode.com/
 # Usage: bash ./generate-new-day.sh
 
-curr_year=$(date +%Y)
+curr_year=2024
 cd "./$curr_year" || exit 1
 
 # Go through the list of file and extract the problem from the file name so we know which
